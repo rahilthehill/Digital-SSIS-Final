@@ -3,7 +3,7 @@ import * as THREE from "three";
 import * as dat from "lil-gui";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { Raycaster } from "three";
+import { Raycaster, StaticCopyUsage } from "three";
 import { gsap } from "gsap";
 import Stats from "stats.js";
 
@@ -12,7 +12,7 @@ import Stats from "stats.js";
  */
 
 let sceneReady = false; // for showing/hiding elements before scene is ready
-
+let statspanelBoolean = false
 const loadingBarElement = document.querySelector(".loading-bar"); // loading bar DOM element
 const errorPage = document.querySelector(".errorScreen"); // error screen DOM element
 const initialText = document.querySelector(".initialText"); // initial text DOM element
@@ -573,7 +573,10 @@ TechnicalGUI
 //stats performance (For testing performance on multiple devices)
 const stats = new Stats();
 stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild(stats.dom);
+
+let statDOM = document.body.appendChild(stats.dom);
+statDOM.classList.add("statspanel")
+
 
 //GSAP animations (GREENSOCK)
  const gsapObject = {
@@ -732,18 +735,29 @@ document.body.appendChild(stats.dom);
         console.log(camera.position)
         console.log("Target")
         console.log(controls.target)
-      }
+      },
 
+      statsConsole: function () {
+       
+        if (statspanelBoolean == false) { // stats panel points toggle
+          statspanel.style.visibility = "hidden";
+          statspanelBoolean = true;
+        } else {
+          statspanel.style.visibility = "visible";
+          statspanelBoolean = false;
+        }
+
+      }
     };
 
 
 //control panel for the GSAP animations
-gui.add(gsapObject, 'PACfocusGSAP').name('Focus to PAC {Gsap}')
-gui.add(gsapObject, 'AquafocusGSAP').name('Focus to Aquatics {Gsap}')
-gui.add(gsapObject, 'ILCfocusGSAP').name('Focus to ILC {Gsap}')
-gui.add(gsapObject, 'FullfocusGSAP').name('Focus to Full School View {Gsap}')
-gui.add(gsapObject, 'goTourGSAP').name('Take a tour! {Gsap}')
-gui.add(gsapObject, 'gsapCamConsole').name('Camera Values {Gsap}')
+gui.add(gsapObject, 'PACfocusGSAP').name('Focus to PAC')
+gui.add(gsapObject, 'AquafocusGSAP').name('Focus to Aquatics')
+gui.add(gsapObject, 'ILCfocusGSAP').name('Focus to ILC')
+gui.add(gsapObject, 'FullfocusGSAP').name('Focus to Full School View')
+gui.add(gsapObject, 'goTourGSAP').name('Take a tour!')
+TechnicalGUI.add(gsapObject, 'gsapCamConsole').name('Camera Values ')
 
 
 /**
