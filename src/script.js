@@ -24,12 +24,12 @@ const pointsElement = document.querySelector(".points"); //points div dom elemen
 const loadingManager = new THREE.LoadingManager(
   //assets Loaded
   () => {
-    // //gsap to animate black blocking shader
-    // gsap.to(overlayMaterial.uniforms.uAlpha, {
-    //   duration: 3,
-    //   value: 0,
-    //   delay: 1,
-    // });
+    //gsap to animate black blocking shader
+    gsap.to(overlayMaterial.uniforms.uAlpha, {
+      duration: 3,
+      value: 0,
+      delay: 1,
+    });
 
     //time out of 500 seconds for progress bar to reach right side of the screen due to css transition easing of 0.500ms
     window.setTimeout(() => {
@@ -438,8 +438,8 @@ window.addEventListener("resize", () => {
 const camera = new THREE.PerspectiveCamera(
   80,
   sizes.width / sizes.height,
-  0.1,
-  100
+  0.01,
+  2000
 );
 
 camera.position.set(-0.06, -3.3, 1.35);
