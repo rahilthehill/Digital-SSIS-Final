@@ -12,7 +12,7 @@ import Stats from "stats.js";
  */
 
 let sceneReady = false; // for showing/hiding elements before scene is ready
-let statspanelBoolean = false
+let statspanelBoolean = false;
 const loadingBarElement = document.querySelector(".loading-bar"); // loading bar DOM element
 const errorPage = document.querySelector(".errorScreen"); // error screen DOM element
 const initialText = document.querySelector(".initialText"); // initial text DOM element
@@ -20,21 +20,19 @@ const infoText = document.querySelector(".info"); // info text DOM element
 const aboutText = document.querySelector(".about"); // about text DOM element
 const pointsElement = document.querySelector(".points"); //points div dom element
 
-
 //loading manager providing 3 states. Loading/Loaded/Error. (For all WEBGL assets)
 const loadingManager = new THREE.LoadingManager(
-    //assets Loaded
+  //assets Loaded
   () => {
-     //gsap to animate black blocking shader
-     gsap.to(overlayMaterial.uniforms.uAlpha, {
-      duration: 3,
-      value: 0,
-      delay: 1,
-    });
+    // //gsap to animate black blocking shader
+    // gsap.to(overlayMaterial.uniforms.uAlpha, {
+    //   duration: 3,
+    //   value: 0,
+    //   delay: 1,
+    // });
 
-    
     //time out of 500 seconds for progress bar to reach right side of the screen due to css transition easing of 0.500ms
-      window.setTimeout(() => {
+    window.setTimeout(() => {
       console.log("SCENE LOADED"); // logs all assets loaded
 
       //class list to trigger CSS transform:ended
@@ -50,8 +48,7 @@ const loadingManager = new THREE.LoadingManager(
       //trigger to hide initial text
     }, 2000);
 
-
-//moves shader
+    //moves shader
     window.setTimeout(() => {
       sceneReady = true;
 
@@ -59,15 +56,15 @@ const loadingManager = new THREE.LoadingManager(
         duration: 5,
         x: 5.12,
         y: -2.59,
-        z: 0.46
-        });
-  
-    gsap.to(camera.position, {
+        z: 0.46,
+      });
+
+      gsap.to(camera.position, {
         duration: 5,
-        x:-5.08, 
-        y: 1.56, 
-        z: 0.43
-        });
+        x: -5.08,
+        y: 1.56,
+        z: 0.43,
+      });
     }, 8000);
   },
 
@@ -75,7 +72,7 @@ const loadingManager = new THREE.LoadingManager(
 
   (itemUrl, itemsLoaded, itemsTotal) => {
     //logs URL of asset, how many loaded and how many assets to load
-    
+
     console.log("SCENE PROGRESS"); // one console log for each asset that is loaded
 
     console.log(itemUrl, itemsLoaded, itemsTotal);
@@ -84,7 +81,6 @@ const loadingManager = new THREE.LoadingManager(
 
     //applying to css "transform scaleX"
     loadingBarElement.style.transform = `scaleX(${progressRatio})`;
-
   },
 
   //ERROR - returns when there is a error in loading/displaying or anything WBEGL related.
@@ -122,34 +118,35 @@ let aboutHidden = true;
 let autoRotating = true;
 
 //GUI for Technical controls - Folder panel
-const TechnicalGUI = gui.addFolder ('Developer/Technical Settings')
+const TechnicalGUI = gui.addFolder("Developer/Technical Settings");
 TechnicalGUI.close(); // starts gui folder closed
 
-const debugObject = {  //object containing all the functions to show and hide elements
+const debugObject = {
+  //object containing all the functions to show and hide elements
 
   hideInfo: function () {
-
-    if (infoHidden == false) { // instructions points toggle
-        infoText.style.visibility = "hidden";
-        infoHidden = true;
-      } else {
-        infoText.style.visibility = "visible";
-        infoHidden = false;
-      }
+    if (infoHidden == false) {
+      // instructions points toggle
+      infoText.style.visibility = "hidden";
+      infoHidden = true;
+    } else {
+      infoText.style.visibility = "visible";
+      infoHidden = false;
+    }
   },
   aboutInfo: function () {
-
-    if (aboutHidden == false) { //about panel toggle
-        aboutText.style.visibility = "hidden";
-        aboutHidden = true;
-      } else {
-        aboutText.style.visibility = "visible";
-        aboutHidden = false;
-      }
-
+    if (aboutHidden == false) {
+      //about panel toggle
+      aboutText.style.visibility = "hidden";
+      aboutHidden = true;
+    } else {
+      aboutText.style.visibility = "visible";
+      aboutHidden = false;
+    }
   },
   disablePoints: function () {
-    if (pointsHidden == false) { // interest points toggle
+    if (pointsHidden == false) {
+      // interest points toggle
       pointsElement.style.visibility = "hidden";
       pointsHidden = true;
     } else {
@@ -158,47 +155,40 @@ const debugObject = {  //object containing all the functions to show and hide el
     }
   },
 
-  disableOrbit: function () { //orbit controls toggle
+  disableOrbit: function () {
+    //orbit controls toggle
     if (orbitDisabled == false) {
-
       controls.enabled = false;
       orbitDisabled = true;
       alert("YOU HAVE DISABLED ORBIT/MOUSE/FINGER CONTROLS");
-
     } else {
-
       controls.enabled = true;
       orbitDisabled = false;
       alert("YOU HAVE ENABLED ORBIT/MOUSE/FINGER CONTROLS");
-
     }
   },
 
   toggleAutorotate: function () {
-    
-
-    if (autoRotating == true) { // toggle auto rotation
-        controls.autoRotate = false
-        autoRotating = false;
-      } else {
-        controls.autoRotate = true
-        autoRotating = true;
-      }
-  }
-
-
+    if (autoRotating == true) {
+      // toggle auto rotation
+      controls.autoRotate = false;
+      autoRotating = false;
+    } else {
+      controls.autoRotate = true;
+      autoRotating = true;
+    }
+  },
 };
 
 gui.close(); // collaping the whole control panel
 
 //adding toggle function buttons to the control panel
-gui.add(debugObject, "hideInfo").name("Toggle Instructions"); 
+gui.add(debugObject, "hideInfo").name("Toggle Instructions");
 
 gui.add(debugObject, "aboutInfo").name("Toggle About");
 gui.add(debugObject, "disablePoints").name("Toggle Info Points");
-gui.add(debugObject, "disableOrbit").name("Toggle Orbit Controls")
+gui.add(debugObject, "disableOrbit").name("Toggle Orbit Controls");
 gui.add(debugObject, "toggleAutorotate").name("Toggle Auto Rotation");
-
 
 /**
  * Overlay
@@ -234,7 +224,6 @@ scene.add(overlay);
  */
 
 const updateAllMaterials = () => {
-
   //checks the childs of all parents (all 33 ~ objects)
 
   scene.traverse((child) => {
@@ -251,15 +240,14 @@ const updateAllMaterials = () => {
   });
 };
 
-
-//Env map - for lighting 
+//Env map - for lighting
 const environmentMap = cubeTextureLoader.load([
   "EnvMap/nx.jpg",
-  "Envmap/nx.jpg",
-  "Envmap/py.jpg",
-  "Envmap/ny.jpg",
-  "Envmap/pz.jpg",
-  "Envmap/nz.jpg",
+  "EnvMap/nx.jpg",
+  "EnvMap/py.jpg",
+  "EnvMap/ny.jpg",
+  "EnvMap/pz.jpg",
+  "EnvMap/nz.jpg",
 ]);
 
 environmentMap.encoding = THREE.sRGBEncoding;
@@ -273,8 +261,7 @@ scene.environment = environmentMap;
 debugObject.envMapIntensity = 2.5;
 
 //Putting the EnvMapIntensity value in the Technical controls panel
-TechnicalGUI
-  .add(debugObject, "envMapIntensity")
+TechnicalGUI.add(debugObject, "envMapIntensity")
   .min(0.5)
   .max(10)
   .step(0.001)
@@ -283,47 +270,40 @@ TechnicalGUI
   })
   .name("Environment Intensity");
 
-
 /**
  * Loading/initiating the model
  */
 
 gltfLoader.load(
-
   "models/DigitalSSISv5.glb", //scene.glb 5MB
 
   (gltf) => {
-
     gltf.scene.scale.set(1, 1, 1);
     gltf.scene.position.set(0, -4, 0);
     gltf.scene.rotation.y = Math.PI * 0.5;
-    
+
     scene.add(gltf.scene);
 
     updateAllMaterials();
 
     //model rotation values for modification in controls panel (Technical)
-    TechnicalGUI
-      .add(gltf.scene.rotation, "y") // Model Y rotation
+    TechnicalGUI.add(gltf.scene.rotation, "y") // Model Y rotation
       .min(-Math.PI)
       .max(Math.PI)
       .step(0.001)
       .name("Model Rotation");
 
-      TechnicalGUI
-      .add(gltf.scene.position, "x")  // Model X position 
+    TechnicalGUI.add(gltf.scene.position, "x") // Model X position
       .min(-10)
       .max(10)
       .step(0.001)
       .name("Model X");
-      TechnicalGUI
-      .add(gltf.scene.position, "y") // Model X position 
+    TechnicalGUI.add(gltf.scene.position, "y") // Model X position
       .min(-5)
       .max(-1)
       .step(0.001)
       .name("Model Y");
-      TechnicalGUI
-      .add(gltf.scene.position, "z") // Model X position 
+    TechnicalGUI.add(gltf.scene.position, "z") // Model X position
       .min(-5)
       .max(5)
       .step(0.001)
@@ -332,15 +312,15 @@ gltfLoader.load(
 );
 
 /**
- * Info Points 
+ * Info Points
  */
 
 //raycaster initiated
-  //for casting out points and lines for checking if model intersects
-    //how many times etc...
-const raycaster = new Raycaster(); // used for hiding/showing the interest points 
+//for casting out points and lines for checking if model intersects
+//how many times etc...
+const raycaster = new Raycaster(); // used for hiding/showing the interest points
 
-//interest points vector locations 
+//interest points vector locations
 const points = [
   {
     position: new THREE.Vector3(4.8, -2.8, 2), // Aquatics center point
@@ -403,31 +383,26 @@ directionalLight.position.set(0.25, 3, -2.25);
 scene.add(directionalLight);
 
 //adding the tweaks in the controls panel for the directionalLight
-TechnicalGUI
-  .add(directionalLight, "intensity")
+TechnicalGUI.add(directionalLight, "intensity")
   .min(0)
   .max(50)
   .step(0.001)
   .name("Sun Intensity");
-  TechnicalGUI
-  .add(directionalLight.position, "x")
+TechnicalGUI.add(directionalLight.position, "x")
   .min(-5)
   .max(10)
   .step(0.001)
   .name("Sun X");
-  TechnicalGUI
-  .add(directionalLight.position, "y")
+TechnicalGUI.add(directionalLight.position, "y")
   .min(-5)
   .max(10)
   .step(0.001)
   .name("Sun Y");
-  TechnicalGUI
-  .add(directionalLight.position, "z")
+TechnicalGUI.add(directionalLight.position, "z")
   .min(-5)
   .max(10)
   .step(0.001)
   .name("Sun Z");
-
 
 /**
  * Window Canvas Sizing
@@ -453,12 +428,11 @@ window.addEventListener("resize", () => {
   //for device performance and visuals
 });
 
-
 /**
  * Camera
  */
 
-// Initial Camera, 
+// Initial Camera,
 //this starts of with a set location which is then taken over GreenSock or Orbit controls
 
 const camera = new THREE.PerspectiveCamera(
@@ -472,10 +446,21 @@ camera.position.set(-0.06, -3.3, 1.35);
 scene.add(camera);
 
 //controls panel tweaks for the camera
-TechnicalGUI.add(camera.position, "x").min(-5).max(5).step(0.00001).name("Camera X");
-TechnicalGUI.add(camera.position, "y").min(-5).max(5).step(0.00001).name("Camera Y");
-TechnicalGUI.add(camera.position, "z").min(-5).max(5).step(0.00001).name("Camera Z");
-
+TechnicalGUI.add(camera.position, "x")
+  .min(-5)
+  .max(5)
+  .step(0.00001)
+  .name("Camera X");
+TechnicalGUI.add(camera.position, "y")
+  .min(-5)
+  .max(5)
+  .step(0.00001)
+  .name("Camera Y");
+TechnicalGUI.add(camera.position, "z")
+  .min(-5)
+  .max(5)
+  .step(0.00001)
+  .name("Camera Z");
 
 /**
  * Orbit controls (Interactive controls)
@@ -489,41 +474,35 @@ controls.maxDistance = 15;
 controls.minDistance = 0.01;
 controls.maxPolarAngle = Math.PI / 1.5;
 controls.minPolarAngle = Math.PI / 10;
-controls.target = new THREE.Vector3( 3.98, -2.76, 4.26);
+controls.target = new THREE.Vector3(3.98, -2.76, 4.26);
 //control panel (techincal) tweaks for the orbit controls
-TechnicalGUI
-  .add(controls, "autoRotateSpeed")
+TechnicalGUI.add(controls, "autoRotateSpeed")
   .name("Auto Rotate Speed")
   .max(10)
   .min(0.1)
   .step(0.001);
-TechnicalGUI
-  .add(controls, "dampingFactor")
+TechnicalGUI.add(controls, "dampingFactor")
   .name("Movement easing level")
   .max(0.5)
   .min(0.1)
   .step(0.001);
 // gui.add(controls, 'maxDistance') // for testing purposes
 // gui.add(controls, 'minDistance') // for testing purposes
-TechnicalGUI
-  .add(controls.target, "x")
+TechnicalGUI.add(controls.target, "x")
   .min(-5)
   .max(5)
   .step(0.00001)
   .name("Controls Target X");
-  TechnicalGUI
-  .add(controls.target, "y")
+TechnicalGUI.add(controls.target, "y")
   .min(-5)
   .max(5)
   .step(0.00001)
   .name("Controls Target Y");
-  TechnicalGUI
-  .add(controls.target, "z")
+TechnicalGUI.add(controls.target, "z")
   .min(-5)
   .max(5)
   .step(0.00001)
   .name("Controls Target Z");
-
 
 /**
  * Renderer
@@ -554,18 +533,15 @@ scene.fog = fog;
 renderer.setClearColor(fogcolor);
 
 // Encoding panel - debugging for technical controls panel
-TechnicalGUI
-  .add(renderer, "toneMapping", {
-    No: THREE.NoToneMapping,
-    Linear: THREE.LinearToneMapping,
-    Reinhard: THREE.ReinhardToneMapping,
-    Cineon: THREE.CineonToneMapping,
-    ACESFilmic: THREE.ACESFilmicToneMapping,
-  })
-  .name("Tone/Style");
+TechnicalGUI.add(renderer, "toneMapping", {
+  No: THREE.NoToneMapping,
+  Linear: THREE.LinearToneMapping,
+  Reinhard: THREE.ReinhardToneMapping,
+  Cineon: THREE.CineonToneMapping,
+  ACESFilmic: THREE.ACESFilmicToneMapping,
+}).name("Tone/Style");
 
-  TechnicalGUI
-  .add(renderer, "toneMappingExposure")
+TechnicalGUI.add(renderer, "toneMappingExposure")
   .min(0)
   .max(10)
   .step(0.001)
@@ -576,190 +552,219 @@ const stats = new Stats();
 stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
 let statDOM = document.body.appendChild(stats.dom);
-statDOM.classList.add("statspanel")
-
+statDOM.classList.add("statspanel");
 
 //GSAP animations (GREENSOCK)
- const gsapObject = {
+const gsapObject = {
   //once again the cube solution for the VECTOR3 can be used here
   //or by manually setting the camera and using the controls panel to console.log the position
-  
-  //GSAP animating camera 
-     PACfocusGSAP: function () { // To the PAC
-        
-      //gsap.to used it makes animation from where the camera already is to the desitination
-       
-      gsap.to(controls.target, {
-            duration: 5,
-            x: 2.06,
-            y:-2.65,
-            z: 8.14
-            });
-      
-        gsap.to(camera.position, {
-            duration: 5,
-            x: -0.03,
-            y:-2.15,
-            z: 9.19
-            });
-       
-      },
 
-      AquafocusGSAP: function () {  // To the Aquatics center
-        
-        gsap.to(controls.target, {
-            duration: 5,
-            x: 4.8,
-            y: -2.8,
-            z: 2.3
-            });
-      
-        gsap.to(camera.position, {
-            duration: 5,
-            x: 4.0,
-            y: -2.25, 
-            z: 2.8
-          
-            });
-      },
+  //GSAP animating camera
+  PACfocusGSAP: function () {
+    // To the PAC
 
-      ILCfocusGSAP: function () { // To the ILC 
-        
-        gsap.to(controls.target, {
-            duration: 5,
-            x: 5.7,
-            y: -2.7,
-            z: 7.5
-            });
-      
-        gsap.to(camera.position, {
-            duration: 5,
-            x: 4.8,
-            y: -1.8,
-            z: 6.3
-            });
-      },
+    //gsap.to used it makes animation from where the camera already is to the desitination
 
-      FullfocusGSAP: function () { // To Macro View of the school
-        
-        gsap.to(controls.target, {
-            duration: 5,
-            x: 5.12,
-            y: -2.59,
-            z: 0.46
-            });
-      
-        gsap.to(camera.position, {
-            duration: 5,
-            x:-5.08, 
-            y: 1.56, 
-            z: 0.43
-            });
-      },
+    gsap.to(controls.target, {
+      duration: 5,
+      x: 2.06,
+      y: -2.65,
+      z: 8.14,
+    });
 
-     goTourGSAP: function () { // For a tour of the school
-   
-        //starts at full school view
-        gsap.to(controls.target, {
-            duration: 5,
-            x: 5.12,
-            y: -2.59,
-            z: 0.46
-            });
-      
-        gsap.to(camera.position, {
-            duration: 5,
-            x:-5.08, 
-            y: 1.56, 
-            z: 0.43
-            });
-
-        //Location 1 - for the tour
-        gsap.to(controls.target, { duration: 5,
-            x: 4.783702814504232, y: -3.0775103706225573, z: 3.7732226061215153,
-            delay: 10 });
-      
-        gsap.to(camera.position, { duration: 5,
-            x: -1.2279277257974446, y: -2.852452816554733, z: 2.0289677446309087,
-            delay: 10  });
-        
-            //Location 2 - for the tour
-        gsap.to(controls.target, { duration: 3,
-            x: 5.036808999282484, y: -3.0514440177482727, z: 5.47275527603404,
-            delay: 15 });
-      
-        gsap.to(camera.position, { duration: 3,
-            x: 1.955478536026673, y: 0.044140677598314415, z: 5.236954502714106,
-            delay: 15  });
-        
-            //Location 3 - for the tour
-        gsap.to(controls.target, { duration: 3,
-            x: 2.984486639161877, y: -3.8104176079106185, z: -2.5252449422492678,
-            delay: 20 });
-      
-        gsap.to(camera.position, { duration: 3,
-            x: 0.1639697938110638, y: -3.2699706700381648, z: -7.063118734005729,
-            delay: 20  });
-        
-            //Location 4 - for the tour
-        gsap.to(controls.target, { duration: 5,
-            x: 2.964996468688137, y: -2.41276037838069, z: 1.1149399052355649,
-            delay: 25 });
-      
-        gsap.to(camera.position, { duration: 5,
-            x: 9.491018424315433, y: 0.7761190642912368, z: 0.3317786152275958,
-            delay: 25  });
-
-       
-
-       // Ends at full school view - for the tour
-       gsap.to(controls.target, {
-        duration: 5,
-        x: 5.12,
-        y: -2.59,
-        z: 0.46,
-        delay: 30
-        });
-  
     gsap.to(camera.position, {
-        duration: 5,
-        x:-5.08, 
-        y: 1.56, 
-        z: 0.43,
-        delay: 30 
-        });
-      },
+      duration: 5,
+      x: -0.03,
+      y: -2.15,
+      z: 9.19,
+    });
+  },
 
-      // to give GSAP XYZ Camera values for the target/position of the camera
-      gsapCamConsole: function () {
-        console.log("Position")
-        console.log(camera.position)
-        console.log("Target")
-        console.log(controls.target)
-      },
+  AquafocusGSAP: function () {
+    // To the Aquatics center
 
-      statsConsole: function () {
-       
-        if (statspanelBoolean == false) { // stats panel points toggle
-          statspanel.style.visibility = "hidden";
-          statspanelBoolean = true;
-        } else {
-          statspanel.style.visibility = "visible";
-          statspanelBoolean = false;
-        }
+    gsap.to(controls.target, {
+      duration: 5,
+      x: 4.8,
+      y: -2.8,
+      z: 2.3,
+    });
 
-      }
-    };
+    gsap.to(camera.position, {
+      duration: 5,
+      x: 4.0,
+      y: -2.25,
+      z: 2.8,
+    });
+  },
 
+  ILCfocusGSAP: function () {
+    // To the ILC
+
+    gsap.to(controls.target, {
+      duration: 5,
+      x: 5.7,
+      y: -2.7,
+      z: 7.5,
+    });
+
+    gsap.to(camera.position, {
+      duration: 5,
+      x: 4.8,
+      y: -1.8,
+      z: 6.3,
+    });
+  },
+
+  FullfocusGSAP: function () {
+    // To Macro View of the school
+
+    gsap.to(controls.target, {
+      duration: 5,
+      x: 5.12,
+      y: -2.59,
+      z: 0.46,
+    });
+
+    gsap.to(camera.position, {
+      duration: 5,
+      x: -5.08,
+      y: 1.56,
+      z: 0.43,
+    });
+  },
+
+  goTourGSAP: function () {
+    // For a tour of the school
+
+    //starts at full school view
+    gsap.to(controls.target, {
+      duration: 5,
+      x: 5.12,
+      y: -2.59,
+      z: 0.46,
+    });
+
+    gsap.to(camera.position, {
+      duration: 5,
+      x: -5.08,
+      y: 1.56,
+      z: 0.43,
+    });
+
+    //Location 1 - for the tour
+    gsap.to(controls.target, {
+      duration: 5,
+      x: 4.783702814504232,
+      y: -3.0775103706225573,
+      z: 3.7732226061215153,
+      delay: 10,
+    });
+
+    gsap.to(camera.position, {
+      duration: 5,
+      x: -1.2279277257974446,
+      y: -2.852452816554733,
+      z: 2.0289677446309087,
+      delay: 10,
+    });
+
+    //Location 2 - for the tour
+    gsap.to(controls.target, {
+      duration: 3,
+      x: 5.036808999282484,
+      y: -3.0514440177482727,
+      z: 5.47275527603404,
+      delay: 15,
+    });
+
+    gsap.to(camera.position, {
+      duration: 3,
+      x: 1.955478536026673,
+      y: 0.044140677598314415,
+      z: 5.236954502714106,
+      delay: 15,
+    });
+
+    //Location 3 - for the tour
+    gsap.to(controls.target, {
+      duration: 3,
+      x: 2.984486639161877,
+      y: -3.8104176079106185,
+      z: -2.5252449422492678,
+      delay: 20,
+    });
+
+    gsap.to(camera.position, {
+      duration: 3,
+      x: 0.1639697938110638,
+      y: -3.2699706700381648,
+      z: -7.063118734005729,
+      delay: 20,
+    });
+
+    //Location 4 - for the tour
+    gsap.to(controls.target, {
+      duration: 5,
+      x: 2.964996468688137,
+      y: -2.41276037838069,
+      z: 1.1149399052355649,
+      delay: 25,
+    });
+
+    gsap.to(camera.position, {
+      duration: 5,
+      x: 9.491018424315433,
+      y: 0.7761190642912368,
+      z: 0.3317786152275958,
+      delay: 25,
+    });
+
+    // Ends at full school view - for the tour
+    gsap.to(controls.target, {
+      duration: 5,
+      x: 5.12,
+      y: -2.59,
+      z: 0.46,
+      delay: 30,
+    });
+
+    gsap.to(camera.position, {
+      duration: 5,
+      x: -5.08,
+      y: 1.56,
+      z: 0.43,
+      delay: 30,
+    });
+  },
+
+  // to give GSAP XYZ Camera values for the target/position of the camera
+  gsapCamConsole: function () {
+    console.log("Position");
+    console.log(camera.position);
+    console.log("Target");
+    console.log(controls.target);
+  },
+
+  statsConsole: function () {
+    if (statspanelBoolean == false) {
+      // stats panel points toggle
+      statspanel.style.visibility = "hidden";
+      statspanelBoolean = true;
+    } else {
+      statspanel.style.visibility = "visible";
+      statspanelBoolean = false;
+    }
+  },
+};
 
 //control panel for the GSAP animations
-gui.add(gsapObject, 'PACfocusGSAP').name('Focus to PAC')
-gui.add(gsapObject, 'AquafocusGSAP').name('Focus to Aquatics')
-gui.add(gsapObject, 'ILCfocusGSAP').name('Focus to ILC')
-gui.add(gsapObject, 'FullfocusGSAP').name('Focus to Full School View')
-gui.add(gsapObject, 'goTourGSAP').name('Take a tour!')
-TechnicalGUI.add(gsapObject, 'gsapCamConsole').name('Camera Values ')
-
+gui.add(gsapObject, "PACfocusGSAP").name("Focus to PAC");
+gui.add(gsapObject, "AquafocusGSAP").name("Focus to Aquatics");
+gui.add(gsapObject, "ILCfocusGSAP").name("Focus to ILC");
+gui.add(gsapObject, "FullfocusGSAP").name("Focus to Full School View");
+gui.add(gsapObject, "goTourGSAP").name("Take a tour!");
+TechnicalGUI.add(gsapObject, "gsapCamConsole").name("Camera Values ");
 
 /**
  * Animations - TICK FUNCTION
@@ -767,16 +772,14 @@ TechnicalGUI.add(gsapObject, 'gsapCamConsole').name('Camera Values ')
 const tick = () => {
   // Update controls
   controls.update(); // updating the controls panel as things are tweaked
-  stats.begin();//starting the stats testing panel
+  stats.begin(); //starting the stats testing panel
 
   //info points
-  
+
   // Update points only when the scene is ready (So HTML isn't showing before WebGL
   if (sceneReady) {
-
     // Go through each intersect points
     for (const point of points) {
-     
       // Get 2D screen position on the screen
       const screenPosition = point.position.clone();
       screenPosition.project(camera);
@@ -793,7 +796,6 @@ const tick = () => {
 
       // If Intersect found
       else {
-
         // Get the distance of the intersection & distance of the point
         const intersectionDistance = intersects[0].distance;
         const pointDistance = point.position.distanceTo(camera.position);
@@ -805,7 +807,6 @@ const tick = () => {
         }
         // Intersection is further than the point location
         else {
-
           // Show the interest point
           point.element.classList.add("visible");
         }
@@ -818,13 +819,13 @@ const tick = () => {
     }
   }
 
-  // Render  
+  // Render
   renderer.render(scene, camera);
 
   // Call animation frame update for window per tick funtion for next frame
   window.requestAnimationFrame(tick);
 
-  //ending stats collection here 
+  //ending stats collection here
   stats.end();
 };
 
