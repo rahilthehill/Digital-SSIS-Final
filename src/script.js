@@ -92,6 +92,7 @@ const loadingManager = new THREE.LoadingManager(
   () => {
     console.log("FATAL ERROR");
     errorPage.style.visibility = "visible";
+    console.log("LOADING HAS FAILED");
     //this displays a error message on the user screen
   }
 );
@@ -253,7 +254,7 @@ const updateAllMaterials = () => {
 
 //Env map - for lighting 
 const environmentMap = cubeTextureLoader.load([
-  "Envmap/px.jpg",
+  "EnvMap/nx.jpg",
   "Envmap/nx.jpg",
   "Envmap/py.jpg",
   "Envmap/ny.jpg",
